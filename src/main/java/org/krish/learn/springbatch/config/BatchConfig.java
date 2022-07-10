@@ -1,6 +1,8 @@
 package org.krish.learn.springbatch.config;
 
 import org.krish.learn.springbatch.listener.JobCompletionListener;
+import org.krish.learn.springbatch.model.Student;
+import org.krish.learn.springbatch.service.StudentService;
 import org.krish.learn.springbatch.steps.Processor;
 import org.krish.learn.springbatch.steps.Reader;
 import org.krish.learn.springbatch.steps.Writer;
@@ -22,6 +24,9 @@ public class BatchConfig {
 
 	@Autowired
 	public StepBuilderFactory stepBuilderFactory;
+	
+	@Autowired
+	StudentService studentService;
 
 	@Bean
 	public Job processJob() {
@@ -31,7 +36,7 @@ public class BatchConfig {
 
 	@Bean
 	public Step step1() {
-		return stepBuilderFactory.get("step1").<String, String>chunk(2).reader(new Reader()).processor(new Processor())
+		return stepBuilderFactory.get("step1").<Student, String>chunk(2).reader(new Reader(studentService)).processor(new Processor())
 				.writer(new Writer()).build();
 	}
 

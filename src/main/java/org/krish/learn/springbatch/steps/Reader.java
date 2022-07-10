@@ -1,25 +1,33 @@
 package org.krish.learn.springbatch.steps;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.krish.learn.springbatch.model.Student;
+import org.krish.learn.springbatch.service.StudentService;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.NonTransientResourceException;
 import org.springframework.batch.item.ParseException;
 import org.springframework.batch.item.UnexpectedInputException;
 
-public class Reader implements ItemReader<String> {
-
-	private String[] messages = { "Hello World", "Spring boot app with Spring Batch",
-			"The is application uses h2 database", "Test message 4", "Test message 5", "Test message 6"
-
-	};
+public class Reader implements ItemReader<Student> {
 
 	private int count = 0;
 
-	@Override
-	public String read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
+	private List<Student> listStudents = new ArrayList<Student>();
 
-		if (count < messages.length) {
+	private StudentService studentService;
+
+	public Reader(StudentService studentService) {
+		this.studentService = studentService;
+	}
+
+	@Override
+	public Student read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
+		listStudents = studentService.getAllStudents();
+		if (count < listStudents.size()) {
 			System.out.println("count::" + count);
-			return messages[count++];
+			return listStudents.get(count++);
 		} else {
 			count = 0;
 		}
