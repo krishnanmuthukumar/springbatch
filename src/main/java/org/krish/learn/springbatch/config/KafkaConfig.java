@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.krish.learn.kafka.avro.AvroStudent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +14,8 @@ import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 
+import io.confluent.kafka.serializers.KafkaAvroSerializer;
+
 @Configuration
 public class KafkaConfig {
 
@@ -20,16 +23,18 @@ public class KafkaConfig {
 	private KafkaProperties kafkaProperties;
 
 	@Bean
-	public ProducerFactory<String, String> producerFactory() {
+	public ProducerFactory<String, AvroStudent> producerFactory() {
 
 		Map<String, Object> configProps = new HashMap<>(kafkaProperties.buildProducerProperties());
 		configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-		configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-		return new DefaultKafkaProducerFactory<String, String>(configProps);
+		configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializer.class);
+		return new DefaultKafkaProducerFactory<String, AvroStudent>(configProps);
 	}
 
 	@Bean
-	public KafkaTemplate<String, String> kafkaTemplate() {
+	public KafkaTemplate<String, AvroStudent> kafkaTemplate() {
 		return new KafkaTemplate<>(producerFactory());
 	}
+	
+	
 }

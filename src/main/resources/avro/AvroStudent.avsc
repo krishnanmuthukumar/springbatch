@@ -6,7 +6,7 @@
        { "name": "name", "type": "string", "doc": "Name of Student" },
        { "name": "email", "type": "string", "doc": "Email of the Stdudent" }
      ],
-     "name": "Student",
+     "name": "AvroStudent",
      "namespace": "org.krish.learn.kafka.avro",
      "type": "record"
 }

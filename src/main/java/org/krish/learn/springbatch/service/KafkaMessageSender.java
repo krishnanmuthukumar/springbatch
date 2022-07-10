@@ -1,7 +1,7 @@
 package org.krish.learn.springbatch.service;
 
+import org.krish.learn.kafka.avro.AvroStudent;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
@@ -12,20 +12,20 @@ import org.springframework.util.concurrent.ListenableFutureCallback;
 public class KafkaMessageSender {
 
 	@Autowired
-	KafkaTemplate<String, String> kafkaTemplate;
+	KafkaTemplate<String, AvroStudent> kafkaTemplate;
 
-	@Value(value = "${spring.kafka.properties.topic}")
-	private String topicName;
+	public void sendMessage(AvroStudent message, String key, String topicName) {
+		
+		System.out.println(kafkaTemplate.getProducerFactory().getConfigurationProperties());
+		ListenableFuture<SendResult<String, AvroStudent>> future = kafkaTemplate.send(topicName,key, message);
 
-	public void sendMessage(String message) {
-		ListenableFuture<SendResult<String, String>> future = kafkaTemplate.send(topicName, message);
-
-		future.addCallback(new ListenableFutureCallback<SendResult<String, String>>() {
+		future.addCallback(new ListenableFutureCallback<SendResult<String, AvroStudent>>() {
 			@Override
-			public void onSuccess(SendResult<String, String> result) {
+			public void onSuccess(SendResult<String, AvroStudent> result) {
 				System.out.println("Sent message=[" + message + "] with offset=" + result.getRecordMetadata().offset()
 						+ " and partition=" + result.getRecordMetadata().partition());
 			}
+
 			@Override
 			public void onFailure(Throwable ex) {
 				System.out.println("Unable to send message=[" + message + "] due to : " + ex.getMessage());

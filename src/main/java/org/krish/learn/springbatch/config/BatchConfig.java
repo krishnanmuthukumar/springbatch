@@ -1,5 +1,6 @@
 package org.krish.learn.springbatch.config;
 
+import org.krish.learn.kafka.avro.AvroStudent;
 import org.krish.learn.springbatch.listener.JobCompletionListener;
 import org.krish.learn.springbatch.model.Student;
 import org.krish.learn.springbatch.service.KafkaMessageSender;
@@ -44,7 +45,7 @@ public class BatchConfig {
 
 	@Bean
 	public Step step1() {
-		return stepBuilderFactory.get("step1").<Student, String>chunk(2).reader(new Reader(studentService)).processor(new Processor())
+		return stepBuilderFactory.get("step1").<Student, AvroStudent>chunk(2).reader(new Reader(studentService)).processor(new Processor())
 				.writer(new Writer(kafkaMessageSender, topic)).build();
 	}
 
