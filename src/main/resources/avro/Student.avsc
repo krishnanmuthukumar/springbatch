@@ -1,0 +1,12 @@
+{
+     "doc":"Student schema",
+     "version": "1",
+     "fields": [
+       { "name": "id", "type": "long", "doc": "Id of the Student" },
+       { "name": "name", "type": "string", "doc": "Name of Student" },
+       { "name": "email", "type": "string", "doc": "Email of the Stdudent" }
+     ],
+     "name": "Student",
+     "namespace": "org.krish.learn.kafka.avro",
+     "type": "record"
+}
