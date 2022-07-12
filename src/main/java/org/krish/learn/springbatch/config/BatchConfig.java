@@ -1,7 +1,7 @@
 package org.krish.learn.springbatch.config;
 
 import org.krish.learn.kafka.avro.AvroStudent;
-import org.krish.learn.springbatch.listener.JobCompletionListener;
+import org.krish.learn.springbatch.listener.BatchJobExecutionListener;
 import org.krish.learn.springbatch.model.Student;
 import org.krish.learn.springbatch.service.KafkaMessageSender;
 import org.krish.learn.springbatch.service.StudentService;
@@ -36,6 +36,8 @@ public class BatchConfig {
 	
 	@Value(value = "${spring.kafka.properties.topic}")
 	private String topic;
+	
+	private int chunksize = 2;
 
 	@Bean
 	public Job processJob() {
@@ -45,12 +47,12 @@ public class BatchConfig {
 
 	@Bean
 	public Step step1() {
-		return stepBuilderFactory.get("step1").<Student, AvroStudent>chunk(2).reader(new Reader(studentService)).processor(new Processor())
-				.writer(new Writer(kafkaMessageSender, topic)).build();
+		return stepBuilderFactory.get("step1").<Student, AvroStudent>chunk(chunksize).reader(new Reader(studentService)).processor(new Processor())
+				.writer(new Writer(kafkaMessageSender, topic, chunksize)).build();
 	}
 
 	public JobExecutionListener listener() {
-		return new JobCompletionListener();
+		return new BatchJobExecutionListener(studentService);
 	}
 
 }

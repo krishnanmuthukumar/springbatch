@@ -102,11 +102,12 @@
 						<phase>generate-sources</phase>
 						<goals>
 							<goal>schema</goal>
-							<goal>protocol</goal>
-							<goal>idl-protocol</goal>
 						</goals>
 						<configuration>
 							<sourceDirectory>${project.basedir}/src/main/resources/avro</sourceDirectory>
+							<imports>
+								<import>src/main/resources/avro/AvroStudent.avsc</import>
+							</imports>
 							<stringType>String</stringType>
 							<createSetters>false</createSetters>
 							<enableDecimalLogicalType>true</enableDecimalLogicalType>

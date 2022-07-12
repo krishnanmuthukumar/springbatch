@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.krish.learn.kafka.avro.AvroStudent;
+import org.krish.learn.kafka.avro.AvroStudentWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.Bean;
@@ -23,18 +24,17 @@ public class KafkaConfig {
 	private KafkaProperties kafkaProperties;
 
 	@Bean
-	public ProducerFactory<String, AvroStudent> producerFactory() {
+	public ProducerFactory<String, AvroStudentWrapper> producerFactory() {
 
 		Map<String, Object> configProps = new HashMap<>(kafkaProperties.buildProducerProperties());
 		configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
 		configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializer.class);
-		return new DefaultKafkaProducerFactory<String, AvroStudent>(configProps);
+		return new DefaultKafkaProducerFactory<String, AvroStudentWrapper>(configProps);
 	}
 
 	@Bean
-	public KafkaTemplate<String, AvroStudent> kafkaTemplate() {
+	public KafkaTemplate<String, AvroStudentWrapper> kafkaTemplate() {
 		return new KafkaTemplate<>(producerFactory());
 	}
-	
-	
+
 }

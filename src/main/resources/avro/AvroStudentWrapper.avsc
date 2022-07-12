@@ -1,0 +1,12 @@
+{
+     "doc":"Avro Student wrapper schema",
+     "version": "1",
+     "fields": [
+       { "name": "avrostudent", "type": {"type":"array", "items": "AvroStudent" },"default":[]},
+       { "name": "totalrecords", "type": "string", "doc": "Total number of records" },
+       { "name": "recordscount", "type": "string", "doc": "Number of records" }
+     ],
+     "name": "AvroStudentWrapper",
+     "namespace": "org.krish.learn.kafka.avro",
+     "type": "record"
+}

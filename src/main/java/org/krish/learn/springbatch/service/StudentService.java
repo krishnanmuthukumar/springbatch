@@ -15,6 +15,7 @@ public class StudentService {
 	private StudentRepository studentRepository;
 
 	public List<Student> getAllStudents() {
+		System.out.println("findAll() method called!");
 		return studentRepository.findAll();
 	}
 
@@ -41,6 +42,10 @@ public class StudentService {
 		} else {
 			return null;
 		}
+	}
+
+	public long count() {
+		return studentRepository.count();
 	}
 
 }
