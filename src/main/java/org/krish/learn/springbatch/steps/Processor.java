@@ -10,6 +10,7 @@ public class Processor implements ItemProcessor<Student, AvroStudent> {
 	public AvroStudent process(Student item) throws Exception {
 		AvroStudent record = AvroStudent.newBuilder().setId(item.getId()).setName(item.getName())
 				.setEmail(item.getEmail()).build();
+		System.out.println("processor called");
 		return record;
 	}
 

@@ -26,6 +26,7 @@ public class Writer implements ItemWriter<AvroStudent> {
 		this.kafkaMessageSender = kafkaMessageSender;
 		this.topic = topic;
 		this.chunkSize = chunkSize;
+		System.out.println("writer called");
 	}
 
 	@Override
@@ -35,10 +36,11 @@ public class Writer implements ItemWriter<AvroStudent> {
 
 		for (AvroStudent item : items) {
 			listAvroStudent.add(item);
+			System.out.println("writer::" + item.toString());
 		}
 
 		String strtotalcount = jobContext.get("totalcount").toString();
-		System.out.println("strtotalcount:"+strtotalcount);
+		System.out.println("writer strtotalcount:" + strtotalcount);
 
 		AvroStudentWrapper record = AvroStudentWrapper.newBuilder().setAvrostudent(listAvroStudent)
 				.setRecordscount(Integer.toString(chunkSize)).setTotalrecords(strtotalcount).build();
